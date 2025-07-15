@@ -1,2 +1,2 @@
 # riskyC
-my unbelievably risky C implementation for high performance purpose
+This is at your own risk and not intended for general use.
