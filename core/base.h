@@ -7,12 +7,15 @@
 #define log_lsz __builtin_ctz(lsz)
 #define log_lbs (log_lsz + 3)
 
+// WARNING: Please don't mess up these with strange operators!
+// ___________________________________________________________
 #define max(a, b) (a > b ? a : b)
 #define min(a, b) (a < b ? a : b)
 #define swap(type, a, b)    \
     type tmp = a;           \
     a = b;                  \
     b = tmp
+// ___________________________________________________________
 //return -1 (if signed) or 1 (if unsigned) when a < b, 0 when greater or equal, only for type with size of long
 #define sml(a, b) (((a) - (b)) >> lbsm1)
 #define sz(num, type) ((num) * sizeof(type))
