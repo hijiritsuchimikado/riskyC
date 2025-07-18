@@ -3,7 +3,7 @@
 
 #include <sys/resource.h>
 
-// return == 0 <=> succeed in changing available stack memory size
+// return 0 <=> succeed in changing available stack memory size
 #define stack_mem(mb) ({                    \
     struct rlimit rl;                       \
     getrlimit(RLIMIT_STACK, &rl);           \
