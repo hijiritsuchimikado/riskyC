@@ -18,12 +18,6 @@
 // ______________________________________________________________________
 // return -1 (if signed) or 1 (if unsigned) when a < b, 0 when greater or equal, only for types with size of long
 #define sml(a, b) (((a) - (b)) >> lbsm1)
-
 #define sz(num, type) ((num) * sizeof(type))
-#define al(x) __builtin_alloca(x)
-#define al1(type) al(sizeof(type))
-#define aln(num, type) al(sz(num, type))
-// only works with num == 0 || -1
-#define ms(x, num, type) __builtin_memset(x, num, sz(num, type))
 
 #endif
