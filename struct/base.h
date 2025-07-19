@@ -3,17 +3,14 @@
 
 #include "../core/base.h"
 
-// two-pointer data
+// two-pointer, four-pointer and one-pointer unsigned long data
 typedef struct {void *str, *end;} pd2;
-// four-pointer data
 typedef struct {void *str, *end, *max, *ptr;} pd4;
-// one-pointer unsigned long data
 typedef struct {unsigned long *data;} ul1;
 
 #define al(x) __builtin_alloca(x)
-// alloc one element
+// alloc one element and n elements
 #define al1(type) al(sizeof(type))
-// alloc n elements
 #define aln(num, type) al(sz(num, type))
 // memset, only works with val == 0 || -1
 #define ms(x, val, size) __builtin_memset(x, val, size)
@@ -45,10 +42,12 @@ typedef struct {unsigned long *data;} ul1;
     x.max = (type*) x.ptr + (num);  \
     x.str = x.end = (type*) x.ptr + ((num) >> 1)
 // _________________________________________________________________
+// move to the position 0 to push back
 #define mv0(x)                          \
     mcp(x.ptr, x.str, x.end - x.str);   \
     x.end -= x.str - x.ptr;             \
     x.str = x.ptr
+// move front/back to be able to push front/back
 #define mvf(x)                                                              \
     void *k = (type*) x.str + (((type*) x.max - (type*) x.end + 1) >> 1);   \
     mmv(k, x.str, x.end - x.str);                                           \
@@ -60,6 +59,7 @@ typedef struct {unsigned long *data;} ul1;
     x.end += k - x.str;                                                 \
     x.str = k
 
+// pop front, pop back, push front and push back
 #define pof(x) x.str -= dc(x) * sizeof(type)
 #define pob(x) x.end += dc(x) * sizeof(type)
 #define puf(x)              \
