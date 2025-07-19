@@ -3,32 +3,48 @@
 
 #include "../core/base.h"
 
+// two-pointer data
 typedef struct {void *str, *end;} pd2;
+// four-pointer data
 typedef struct {void *str, *end, *max, *ptr;} pd4;
+// one-pointer unsigned long data
 typedef struct {unsigned long *data;} ul1;
 
 #define al(x) __builtin_alloca(x)
+// alloc one element
 #define al1(type) al(sizeof(type))
+// alloc n elements
 #define aln(num, type) al(sz(num, type))
-// only works with num == 0 || -1
+// memset, only works with num == 0 || -1
 #define ms(x, num, type) __builtin_memset(x, num, sz(num, type))
+// memcpy and memmove from y to x
 #define mcp(x, y, size) __builtin_memcpy(x, y, size)
 #define mmv(x, y, size) __builtin_memmove(x, y, size)
 
 #define dc(x) sml(x.str, x.end)
 
-#define s0i(x, type, num) x.end = x.str = aln(num, type)
+// start and end from 0
+#define s0i(x, type, num)   \
+    pd2 x;                  \
+    x.end = x.str = aln(num, type)
 // WARNING: You shouldn't change the value of num here: ++, +=, ...
-// _____________________________________________________________________________
-#define smi(x, type, num) x.end = x.str = (type*) aln(num, type) + ((num) >> 1)
-#define s04(x, type, num)                           \
-    x.ptr = al(sz(num, type) + 1);                  \
+// _________________________________________________________________
+// start and end from middle
+#define smi(x, type, num)   \
+    pd2 x;                  \
+    x.end = x.str = (type*) aln(num, type) + ((num) >> 1)
+// start, end and pointer from 0, max at last
+#define s04(x, type, num)           \
+    pd4 x;                          \
+    x.ptr = al(sz(num, type) + 1);  \
     x.max = (type*) (x.str = x.end = x.ptr) + (num)
-#define sm4(x, type, num)                           \
-    x.ptr = al(sz(num, type) + 1);                  \
-    x.max = (type*) x.ptr + (num);                  \
+// start and end from middle, pointer from 0 and max at last
+#define sm4(x, type, num)           \
+    pd4 x;                          \
+    x.ptr = al(sz(num, type) + 1);  \
+    x.max = (type*) x.ptr + (num);  \
     x.str = x.end = (type*) x.ptr + ((num) >> 1)
-// ______________________________________________________________________________________________
+// _________________________________________________________________
 #define mv0(x)                          \
     mcp(x.ptr, x.str, x.end - x.str);   \
     x.end -= x.str - x.ptr;             \
