@@ -5,10 +5,10 @@
 
 #define deque pd2
 
-#define deque_init(x, type, num) smi(x)
-#define deque_pop_front(x, type) pof(x)
-#define deque_pop_back(x, type) pob(x)
-#define deque_push_front(x, type, y) puf(x)
-#define deque_push_back(x, type, y) pub(x)
+#define deque_init(x, type, num) smi(x, type, num)
+#define deque_pop_front(x, type) pof(x, type)
+#define deque_pop_back(x, type) pob(x, type)
+#define deque_push_front(x, type, y) puf(x, type, y)
+#define deque_push_back(x, type, y) pub(x, type, y)
 
 #endif
