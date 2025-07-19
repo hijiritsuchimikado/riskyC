@@ -16,7 +16,7 @@ typedef struct {unsigned long *data;} ul1;
 // alloc n elements
 #define aln(num, type) al(sz(num, type))
 // memset, only works with num == 0 || -1
-#define ms(x, num, type) __builtin_memset(x, num, sz(num, type))
+#define ms(x, num, size) __builtin_memset(x, num, size)
 // memcpy and memmove from y to x
 #define mcp(x, y, size) __builtin_memcpy(x, y, size)
 #define mmv(x, y, size) __builtin_memmove(x, y, size)
