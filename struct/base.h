@@ -12,7 +12,7 @@ typedef struct {void *str, *end, *max, *ptr;} pd4;
 // only works with num == 0 || -1
 #define ms(x, num, type) __builtin_memset(x, num, sz(num, type))
 #define mcp(x, y, size) __builtin_memcpy(x, y, size)
-#define mmv(x, y, size) __builtin_memcpy(x, y, size)
+#define mmv(x, y, size) __builtin_memmove(x, y, size)
 
 #define dc(x) sml(x.str, x.end)
 
