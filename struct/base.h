@@ -5,6 +5,7 @@
 
 typedef struct {void *str, *end;} pd2;
 typedef struct {void *str, *end, *max, *ptr;} pd4;
+typedef struct {unsigned long *data;} ul1;
 
 #define al(x) __builtin_alloca(x)
 #define al1(type) al(sizeof(type))
