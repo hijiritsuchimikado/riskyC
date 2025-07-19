@@ -15,4 +15,5 @@
 #define sfdeq_push_back(x, type, y)     \
     if (x.end == x.max) {mvb(x, type);} \
     pub(x, type, y)
+
 #endif
