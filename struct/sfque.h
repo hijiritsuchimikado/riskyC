@@ -9,7 +9,7 @@
 #define sfque_init(x, type, num) s04(x)
 #define sfque_pop(x, type) pof(x)
 #define sfque_push(x, type, y)      \
-    if (x.end >= x.max) {mv0(x);}   \
+    if (x.end == x.max) {mv0(x);}   \
     pub(x)
 
 #endif
