@@ -23,5 +23,7 @@
 #define al(x) __builtin_alloca(x)
 #define al1(x, type) x = al(sizeof(type))
 #define aln(x, num, type) x = al(sz(num, type))
+// only works with num == 0 || -1
+#define ms(x, num, type) __builtin_memset(x, num, sz(num, type))
 
 #endif
