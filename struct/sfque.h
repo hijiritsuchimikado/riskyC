@@ -6,10 +6,9 @@
 
 #define sfque pd4
 
-#define sfque_init(x, type, num) s04(x)
-#define sfque_pop(x, type) pof(x)
+#define sfque_init(x, type, num) s04(x, type, num)
+#define sfque_pop(x, type) pof(x, type)
 #define sfque_push(x, type, y)      \
     if (x.end == x.max) {mv0(x);}   \
-    pub(x)
-
+    pub(x, type, y)
 #endif
