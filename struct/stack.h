@@ -5,8 +5,8 @@
 
 #define stack pd2
 
-#define stack_init(x, type, num) s0i(x)
-#define stack_pop(x, type) pob(x)
-#define stack_push(x, type, y) pub(x)
+#define stack_init(x, type, num) s0i(x, type, num)
+#define stack_pop(x, type) pob(x, type)
+#define stack_push(x, type, y) pub(x, type, y)
 
 #endif
