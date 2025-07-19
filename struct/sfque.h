@@ -11,4 +11,5 @@
 #define sfque_push(x, type, y)      \
     if (x.end == x.max) {mv0(x);}   \
     pub(x, type, y)
+
 #endif
