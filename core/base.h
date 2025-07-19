@@ -1,6 +1,7 @@
 #ifndef _BASE_H
 #   define _BASE_H
 
+// long size, long bit size, long bit size - 1, log of long size and log of long bit size
 #define lsz sizeof(long)
 #define lbs (lsz << 3)
 #define lbsm1 (lbs - 1)
@@ -18,6 +19,7 @@
 // ______________________________________________________________________
 // return -1 (if signed) or 1 (if unsigned) when a < b, 0 when greater or equal, only for types with size of long
 #define sml(a, b) (((a) - (b)) >> lbsm1)
+// return size of num elements
 #define sz(num, type) ((num) * sizeof(type))
 
 #endif
