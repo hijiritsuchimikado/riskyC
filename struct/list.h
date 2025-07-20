@@ -6,18 +6,11 @@ typedef struct list {
     struct list *next;
 } list;
 
-#define list_val(type, val)     \
-    new->value = al1(type);     \
+#define list_val(type, val) \
+    new->value = al1(type); \
     *(type*) new->value = val
-#define list_merge(n1, n2, n3)  \
-    new->next = n1;             \
-    n2 = n3
-#define list_pos(x, pos)            \
-    list *tmp = x;                  \
-    for (long i = 0; i < pos; ++i)  \
-        tmp = tmp->next
-#define list_new(y) \
-    list *new = y;  \
+#define list_new(x) \
+    list *new = x;  \
     for (; new->next; new = new->next)
 
 #define list_init(x) list *x = NULL;
@@ -34,7 +27,8 @@ typedef struct list {
 // merge a list or push n elements (from array or not) to the front of x
 #define list_merge_list_front(x, y) {   \
     list_new(y);                        \
-    list_merge(x, x, y);                \
+    new->next = x;                      \
+    x = y;                              \
 }
 #define list_push_front_arr(x, type, n, arr) {  \
     list *new = al1(list);                      \
@@ -45,7 +39,8 @@ typedef struct list {
         new = new->next;                        \
         list_val(type, arr[i]);                 \
     }                                           \
-    list_merge(x, x, tmp);                      \
+    new->next = x;                              \
+    x = tmp;                                    \
 }
 #define list_push_front_args(x, type, n, ...) { \
     type arr[] = {__VA_ARGS__};                 \
@@ -59,5 +54,10 @@ typedef struct list {
 #define list_push_ptr_arr(x, type, n, arr) list_push_front_arr(x->next, type, n, arr)
 #define list_push_ptr_args(x, type, n, ...) list_push_front_args(x->next, type, n, __VA_ARGS__)
 // _____________________________________________________________________________________________
+#define list_pop_front(x) x = x->next
+// pop 1 element after x
+#define list_pop_ptr(x) list_pop_front(x->next)
+// pop elements from x->next to y
+#define list_pop_list_ptr(x, y) x->next = y->next
 
 #endif
