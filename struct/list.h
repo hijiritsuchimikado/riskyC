@@ -25,7 +25,7 @@ typedef struct list {
     list_merge_front(x, new);           \
 }
 // merge a list or push n elements (from array or not) to the front of x
-#define list_merge_list_front(x, y) {   \
+#define list_merge_front_list(x, y) {   \
     list_new(y);                        \
     new->next = x;                      \
     x = y;                              \
@@ -50,7 +50,7 @@ typedef struct list {
 // _____________________________________________________________________________________________
 #define list_merge_ptr(x, y) list_merge_front(x->next, y)
 #define list_push_ptr(x, type, val) list_push_front(x->next, type, val)
-#define list_merge_list_ptr(x, y) list_merge_list_front(x->next, y)
+#define list_merge_ptr_list(x, y) list_merge_front_list(x->next, y)
 #define list_push_ptr_arr(x, type, n, arr) list_push_front_arr(x->next, type, n, arr)
 #define list_push_ptr_args(x, type, n, ...) list_push_front_args(x->next, type, n, __VA_ARGS__)
 // _____________________________________________________________________________________________
