@@ -56,10 +56,10 @@ typedef struct list {
 // _____________________________________________________________________________________________
 // pop 1 or more front elements (from x to y)
 #define list_pop_front(x) x = x->next
-#define list_pop_list_front(x, y) x = y->next
+#define list_pop_front_list(x, y) x = y->next
 // pop 1 element after x
 #define list_pop_ptr(x) list_pop_front(x->next)
 // pop elements from x->next to y
-#define list_pop_list_ptr(x, y) list_pop_list_front(x->next, y)
+#define list_pop_ptr_list(x, y) list_pop_front_list(x->next, y)
 
 #endif
