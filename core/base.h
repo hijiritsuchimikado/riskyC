@@ -10,8 +10,8 @@
 
 // WARNING: Please don't mess up these with operators changing variables!
 // ______________________________________________________________________
-#define max(a, b) (a > b ? a : b)
-#define min(a, b) (a < b ? a : b)
+#define max(a, b) ((a) > (b) ? (a) : (b))
+#define min(a, b) ((a) < (b) ? (a) : (b))
 #define swap(a, b) {    \
     typeof(a) t = a;    \
     a = b; b = t;       \
