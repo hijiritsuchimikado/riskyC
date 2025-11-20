@@ -1,6 +1,8 @@
 #ifndef _GCD_H
 #   define _GCD_H
 
+#include "../core/base.h"
+
 #define gcd(a, b) ({        \
     typeof(0u | (a) | (b))  \
     u = (a), v = (b), res;  \
