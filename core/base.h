@@ -12,10 +12,10 @@
 // ______________________________________________________________________
 #define max(a, b) (a > b ? a : b)
 #define min(a, b) (a < b ? a : b)
-#define swap(type, a, b)    \
-    type tmp = a;           \
-    a = b;                  \
-    b = tmp
+#define swap(a, b) {    \
+    typeof(a) t = a;    \
+    a = b; b = t;       \
+}
 // ______________________________________________________________________
 // return -1 (if signed) or 1 (if unsigned) when a < b, 0 when greater or equal, only for types with size of long
 #define sml(a, b) (((a) - (b)) >> lbsm1)
