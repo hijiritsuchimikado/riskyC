@@ -9,7 +9,7 @@
     if (!u) res = v;        \
     else {                  \
         res = ctzg(u | v);  \
-        u >>= ctzg(u);      \
+        u >>= res;          \
         while (v) {         \
             v >>= ctzg(v);  \
             if (u > v)      \
