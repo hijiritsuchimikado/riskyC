@@ -1,6 +1,10 @@
 #ifndef _BASE_H
 #   define _BASE_H
 
+// for builtin functions
+#define ctzg(x) __builtin_ctzg(x)
+#define clzg(x) __builtin_clzg(x)
+
 // long size, long bit size, long bit size - 1, log of long size and log of long bit size
 #define lsz sizeof(long)
 #define lbs (lsz << 3)
