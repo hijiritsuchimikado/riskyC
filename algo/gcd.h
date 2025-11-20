@@ -18,8 +18,6 @@
         } res = u << res;   \
     } res;                  \
 })
-
-
-#define lcm(a, b) ((typeof(0u | (a) | (b))) (a) * (b) / gcd(a, b))
+#define lcm(a, b) ((typeof(0u | (a) | (b))) (a) / gcd(a, b) * (b))
 
 #endif
