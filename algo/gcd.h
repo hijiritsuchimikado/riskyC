@@ -14,7 +14,7 @@
             v >>= ctzg(v);  \
             if (u > v)      \
                 swap(u, v); \
-            v -= u;         \
+            v %= u;         \
         } res = u << res;   \
     } res;                  \
 })
