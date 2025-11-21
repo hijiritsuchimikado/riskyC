@@ -3,20 +3,33 @@
 
 #include "../core/base.h"
 
-#define gcd(a, b) ({        \
-    typeof(0u | (a) | (b))  \
-    u = (a), v = (b), res;  \
-    if (!u) res = v;        \
-    else {                  \
-        res = ctzg(u | v);  \
-        u >>= ctzg(u);      \
-        while (v) {         \
-            v >>= ctzg(v);  \
-            if (u > v)      \
-                swap(u, v); \
-            v %= u;         \
-        } res = u << res;   \
-    } res;                  \
+#if !defined(__OPTIMIZE__)
+    #define GCDAT __attribute__((optimize("O1")))
+#else
+    #define GCDAT __attribute__((optimize("no-tree-vectorize")))
+#endif
+
+#define gcd(a, b) ({                \
+    typedef typeof((a) | (b)) T;    \
+    GCDAT inline T gcdf(T u, T v) { \
+        if (u < v) swap(u, v);      \
+        if (!v) return u;           \
+        u %= v;                     \
+        if (!u) return v;           \
+        int zu = ctzg(u), zv =      \
+        ctzg(v), sh = min(zu, zv);  \
+        u >>= zu;                   \
+        v >>= zv;                   \
+        do {                        \
+            T u_v = u - v;          \
+            if (u > v) {            \
+                u = v;              \
+                v = u_v;            \
+            } else v = -u_v;        \
+            v >>= ctzg(v);          \
+        } while (v);                \
+        return u << sh;             \
+    } gcdf(a, b);                   \
 })
 #define lcm(a, b) ((typeof(0u | (a) | (b))) (a) / gcd(a, b) * (b))
 
