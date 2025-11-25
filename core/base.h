@@ -7,6 +7,7 @@
 #define ctzg(x) __builtin_ctzg(x)
 #define clzg(x) __builtin_clzg(x)
 #define ms(x, y, z) __builtin_memset(x, y, z)
+#define mcp(x, y, z) __builtin_memcpy(x, y, z)
 #define alc(x) __builtin_alloca(x)
 
 // for types
