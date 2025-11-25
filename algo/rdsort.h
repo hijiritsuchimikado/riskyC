@@ -3,6 +3,7 @@
 
 #include "../core/base.h"
 
+// not for arrays which can't be swapped by pointers
 #define rdsort(a, n)                                    \
 {                                                       \
     typedef type(n) T;                                  \
