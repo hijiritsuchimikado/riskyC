@@ -3,7 +3,7 @@
 
 #include "../core/base.h"
 
-#define rdloop(a, tmp)                              \
+#define rdloop(a, tmp, n)                           \
     ms(cnt, 0, sizeof(cnt));                        \
     for (T j = 0; j < n; ++j)                       \
         ++cnt[(a[j] >> i) & 0xFFFF];                \
@@ -20,7 +20,7 @@
     type(a) tmp = alc(n * sizeof(a[0]));    \
     for (int i = 0; i < m; i += 16)         \
     {                                       \
-        rdloop(a, tmp);                     \
+        rdloop(a, tmp, n);                  \
         swap(a, tmp);                       \
     }                                       \
 }
@@ -34,13 +34,13 @@
     int i = 0;                              \
     while (1)                               \
     {                                       \
-        rdloop(a, tmp);                     \
+        rdloop(a, tmp, n);                  \
         i += 16;                            \
         if (i >= m) {                       \
             mcp(a, tmp, n * sizeof(a[0]));  \
             break;                          \
         }                                   \
-        rdloop(tmp, a);                     \
+        rdloop(tmp, a, n);                  \
         i += 16;                            \
         if (i >= m) break;                  \
     }                                       \
