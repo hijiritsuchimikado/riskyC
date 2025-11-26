@@ -9,6 +9,7 @@
 #define ms(x, y, z) __builtin_memset(x, y, z)
 #define mcp(x, y, z) __builtin_memcpy(x, y, z)
 #define alc(x) __builtin_alloca(x)
+#define cepr __builtin_choose_expr
 
 // for types
 #define type(x) __typeof__(x)
