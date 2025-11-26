@@ -18,7 +18,7 @@
     for (T j = n - 1; j >= 0; --j)                  \
         tmp[--cnt[(a[j] >> i) & 0xFFFF]] = a[j];    \
     i += 16
-// only for sizeof(a[0]) % 32 != 0
+// only for sizeof(a[0]) % 4 != 0
 #define rdsort_arr(a, n)                    \
 {                                           \
     rdinit(a, n);                           \
@@ -32,7 +32,7 @@
         rdloop(tmp, a, n);                  \
     } while (1);                            \
 }
-// only for sizeof(a[0]) % 32 != 0 and a is a pointer
+// only for sizeof(a[0]) % 4 != 0 and a is a pointer
 #define rdsort_ptr(a, n)    \
 {                           \
     rdinit(a, n);           \
@@ -46,7 +46,7 @@
         rdloop(tmp, a, n);  \
     } while (1);            \
 }
-// fastest one but only for sizeof(a[0]) % 32 == 0
+// fastest one but only for sizeof(a[0]) % 4 == 0
 #define rdsort_32(a, n)     \
 {                           \
     rdinit(a, n);           \
