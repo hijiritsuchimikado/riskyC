@@ -61,7 +61,7 @@
 // type == arr or ptr, only works with an array of only positive or negative values 
 #define rdsort(type, a, n)                      \
 {                                               \
-    if (!(sizeof(a[0]) & 3)) rdsort_32(a, n)    \
+    if (sizeof(a[0]) & 1 == (sizeof(a[0]) >> 1) & 1) rdsort_32(a, n)\
     else rdsort_##type(a, n)                    \
 }
 
