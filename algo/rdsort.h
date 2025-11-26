@@ -32,7 +32,7 @@
     int m = sizeof(a[0]) << 3;              \
     type(a[0]) tmp[n];                      \
     int i = 0;                              \
-    while (1)                               \
+    do                                      \
     {                                       \
         rdloop(a, tmp, n);                  \
         i += 16;                            \
@@ -42,9 +42,11 @@
         }                                   \
         rdloop(tmp, a, n);                  \
         i += 16;                            \
-        if (i >= m) break;                  \
-    }                                       \
+    } while (i < m);                        \
 }
+// type = ptr or arr
+#define rdsort(type, a, n) rdsort_##type(a, n)
+
 // type = ptr or arr
 #define rdsort(type, a, n) rdsort_##type(a, n)
 
