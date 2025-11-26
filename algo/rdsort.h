@@ -3,6 +3,8 @@
 
 #include "../core/base.h"
 
+// my implementation only works with positive or negative arrays
+
 #define rdinit(a, n)            \
     typedef type(n) T;          \
     T cnt[NUM_16];              \
