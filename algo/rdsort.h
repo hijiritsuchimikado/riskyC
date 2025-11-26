@@ -27,7 +27,7 @@
     a to avoid this issue, it is not the focus of this work. The problem (1) is addressed by
     using two memset operations for n32, one more assignment operator for ptr(32), and three memset operations for arr(32).
 
-    TLDR: Just use this macro!
+    TL;DR: Just use this macro!
 */
 
 #define rdinit(a, n)            \
