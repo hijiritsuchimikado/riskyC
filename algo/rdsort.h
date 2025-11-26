@@ -44,6 +44,10 @@
     for (T j = n - 1; j >= 0; --j)                  \
         tmp[--cnt[(a[j] >> i) & 0xFFFF]] = a[j];    \
     i += 16;
+#define rdcheck(a, n)       \
+    i = 0;                  \
+    while (a[i] >= 0) ++i;  \
+    int k = n - i;
 #define rdsort_unmixed_arr(a, n)            \
     rdinit(a, n)                            \
     type(a[0]) tmp[n];                      \
@@ -76,10 +80,6 @@
         rdloop(a, tmp, n)       \
         rdloop(tmp, a, n)       \
     } while (i < m);
-#define rdcheck(a, n)       \
-    i = 0;                  \
-    while (a[i] >= 0) ++i;  \
-    int k = n - i;
 #define rdsort_mixed_arr(a, n)          \
     rdsort_unmixed_32(a, n);            \
     rdcheck(a, n)                       \
