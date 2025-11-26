@@ -24,7 +24,7 @@
         swap(a, tmp);                       \
     }                                       \
 }
-// for arrays in general, but slower
+// for arrays in general
 #define rdsort_arr(a, n)                    \
 {                                           \
     typedef type(n) T;                      \
