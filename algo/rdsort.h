@@ -80,12 +80,21 @@
         rdloop(a, tmp, n)       \
         rdloop(tmp, a, n)       \
     } while (i < m);
-#define rdsort_mixed_arr(a, n)          \
-    rdsort_unmixed_32(a, n);            \
-    rdcheck(a, n)                       \
-    mcp(tmp, a, i * sizeof(a[0]));      \
-    mcp(a, &a[i], k * sizeof(a[0]));    \
-    mcp(&a[k], tmp, i * sizeof(a[0]));
+#define rdsort_mixed_arr(a, n)              \
+    rdsort_unmixed_32(a, n)                 \
+    rdcheck(a, n)                           \
+    if (i < (n >> 1))                       \
+    {                                       \
+        mcp(tmp, a, i * sizeof(a[0]));      \
+        mcp(a, &a[i], k * sizeof(a[0]));    \
+        mcp(&a[k], tmp, i * sizeof(a[0]));  \
+    }                                       \
+    else                                    \
+    {                                       \
+        mcp(tmp, &a[i], k * sizeof(a[0]));  \
+        mmv(&a[k], a, i * sizeof(a[0]));    \
+        mcp(a, tmp, k * sizeof(a[0]));      \
+    }
 #define rdsort_mixed_ptr(a, n)              \
     rdinit(a, n)                            \
     type(a) tmp = alc(n * sizeof(a[0]));    \
