@@ -97,12 +97,10 @@
         }                                       \
         rdloop(tmp, a, n)                       \
     } while (1);
-// type == arr or ptr
 #define rdsort_unmixed(type, a, n)                          \
     if ((sizeof(a[0]) & 1) == ((sizeof(a[0]) >> 1) & 1))    \
         {rdsort_unmixed_32(a, n)}                           \
     else {rdsort_unmixed_##type(a, n)}
-// type == arr or ptr
 #define rdsort_mixed(type, a, n)                            \
     if ((sizeof(a[0]) & 1) == ((sizeof(a[0]) >> 1) & 1))    \
         {rdsort_mixed_##type(a, n)}                         \
