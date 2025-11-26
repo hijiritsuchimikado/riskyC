@@ -5,23 +5,23 @@
 
 /*
     rdsort(type, mix_or, a, n)
-    
+
     type: arr or ptr
     mix_or: unmixed or mixed
     a: array
     n: number of elements (must be signed)
-    
+
     (1) When an array contains both positive and negative elements, the positive elements
     will be sorted at the beginning of the array and the negative elements will be sorted
     at the end. To solve this, the array is divided into two groups: unmixed and mixed.
-    
+
     The unmixed group uses a two-step loop where the elements are swapped between the
     array and a temporary one. If the modulo of the size of each element by 4 is 0 or 3
     (subgroup 32), the loop will continue until the final transition from the temporary
     variable to the array. If not (subgroup ptr), use a pointer for a to avoid the need
     to write the entire temporary array back to a, but a must be a pointer. This division
     also ensures that each for-loop only has one branch.
-    
+
     In the mixed group, it is important to note that there must be at least one negative
     element present, otherwise the program will crash. While there may be ways to manipulate
     a to avoid this issue, it is not the focus of this work. The problem (1) is addressed by
@@ -113,13 +113,13 @@
         }                                       \
         rdloop(tmp, a, n)                       \
     } while (1);
-#define rdsort_unmixed(type, a, n)                              \
-    cepr((sizeof(a[0]) & 1) == ((sizeof(a[0]) >> 1) & 1),       \
-    {rdsort_unmixed_32(a, n)}, {rdsort_unmixed_##type(a, n)})
-#define rdsort_mixed(type, a, n)                            \
-    cepr((sizeof(a[0]) & 1) == ((sizeof(a[0]) >> 1) & 1),   \
-    {rdsort_mixed_##type(a, n)}, {rdsort_mixed_n32(a, n)})
-    
+#define rdsort_unmixed(type, a, n)                                      \
+    cepr((sizeof(a[0]) & 1) == ((sizeof(a[0]) >> 1) & 1),               \
+    ({rdsort_unmixed_32(a, n) 0;}), ({rdsort_unmixed_##type(a, n) 0;}))
+#define rdsort_mixed(type, a, n)                                        \
+    cepr((sizeof(a[0]) & 1) == ((sizeof(a[0]) >> 1) & 1),               \
+    ({rdsort_mixed_##type(a, n) 0;}), ({rdsort_mixed_n32(a, n) 0;}))
+
 #define rdsort(type, mix_or, a, n) rdsort_##mix_or(type, a, n)
 
 #endif
