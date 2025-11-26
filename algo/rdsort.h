@@ -3,8 +3,6 @@
 
 #include "../core/base.h"
 
-// my implementation only works with positive or negative arrays
-
 #define rdinit(a, n)            \
     typedef type(n) T;          \
     T cnt[NUM_16];              \
@@ -60,6 +58,7 @@
         rdloop(tmp, a, n)   \
     } while (i < m);        \
 }
+// only works with an array of only positive or negative values 
 #define rdsort(type, a, n)                      \
 {                                               \
     if (!(sizeof(a[0]) & 3)) rdsort_32(a, n)    \
