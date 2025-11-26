@@ -47,7 +47,4 @@
 // type = ptr or arr
 #define rdsort(type, a, n) rdsort_##type(a, n)
 
-// type = ptr or arr
-#define rdsort(type, a, n) rdsort_##type(a, n)
-
 #endif
