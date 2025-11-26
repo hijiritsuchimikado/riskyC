@@ -8,7 +8,7 @@
     T cnt[NUM_16];              \
     type(a[0]) tmp[n];          \
     int m = sizeof(a[0]) << 3,  \
-    i = 0;
+    i = 0
 #define rdloop(a, tmp, n)                           \
     ms(cnt, 0, sizeof(cnt));                        \
     for (T j = 0; j < n; ++j)                       \
@@ -19,7 +19,7 @@
         tmp[--cnt[(a[j] >> i) & 0xFFFF]] = a[j];    \
     i += 16
 // only for sizeof(a[0]) % 32 != 0
-#define rdsort_n32(a, n)                    \
+#define rdsort_arr(a, n)                    \
 {                                           \
     rdinit(a, n);                           \
     do                                      \
@@ -32,6 +32,20 @@
         rdloop(tmp, a, n);                  \
     } while (1);                            \
 }
+// only for sizeof(a[0]) % 32 != 0 and a is a pointer
+#define rdsort_ptr(a, n)    \
+{                           \
+    rdinit(a, n);           \
+    do                      \
+    {                       \
+        rdloop(a, tmp, n);  \
+        if (i >= m) {       \
+            a = tmp;        \
+            break;          \
+        }                   \
+        rdloop(tmp, a, n);  \
+    } while (1);            \
+}
 // fastest one but only for sizeof(a[0]) % 32 == 0
 #define rdsort_32(a, n)     \
 {                           \
@@ -40,12 +54,12 @@
     {                       \
         rdloop(a, tmp, n);  \
         rdloop(tmp, a, n);  \
-    } while (i < m);        \   
+    } while (i < m);        \
 }
-#define rdsort(a, n)                            \
+#define rdsort(type, a, n)                      \
 {                                               \
-    if (!(sizeof(a[0]) & 3)) rdsort_32(a, n);   \
-    else rdsort_n32(a, n);                      \
+    if (!(sizeof(a[0]) & 3)) rdsort_32(a, n)    \
+    else rdsort_##type(a, n)                    \
 }
 
 #endif
