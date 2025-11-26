@@ -8,6 +8,7 @@
 #define clzg(x) __builtin_clzg(x)
 #define ms(x, y, z) __builtin_memset(x, y, z)
 #define mcp(x, y, z) __builtin_memcpy(x, y, z)
+#define mmv(x, y, z) __builtin_memmove(x, y, z)
 #define alc(x) __builtin_alloca(x)
 #define cepr(cond, e1, e2) __builtin_choose_expr(cond, e1, e2)
 
