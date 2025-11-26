@@ -6,9 +6,8 @@
 #define rdinit(a, n)            \
     typedef type(n) T;          \
     T cnt[NUM_16];              \
-    type(a[0]) tmp[n];          \
     int m = sizeof(a[0]) << 3,  \
-    i = 0
+    i = 0;
 #define rdloop(a, tmp, n)                           \
     ms(cnt, 0, sizeof(cnt));                        \
     for (T j = 0; j < n; ++j)                       \
@@ -17,43 +16,46 @@
         cnt[j] += cnt[j - 1];                       \
     for (T j = n - 1; j >= 0; --j)                  \
         tmp[--cnt[(a[j] >> i) & 0xFFFF]] = a[j];    \
-    i += 16
+    i += 16;
 // only for sizeof(a[0]) % 4 != 0
 #define rdsort_arr(a, n)                    \
 {                                           \
-    rdinit(a, n);                           \
+    rdinit(a, n)                            \
+    type(a[0]) tmp[n];                      \
     do                                      \
     {                                       \
-        rdloop(a, tmp, n);                  \
+        rdloop(a, tmp, n)                   \
         if (i >= m) {                       \
             mcp(a, tmp, n * sizeof(a[0]));  \
             break;                          \
         }                                   \
-        rdloop(tmp, a, n);                  \
+        rdloop(tmp, a, n)                   \
     } while (1);                            \
 }
 // only for sizeof(a[0]) % 4 != 0 and a is a pointer
-#define rdsort_ptr(a, n)    \
-{                           \
-    rdinit(a, n);           \
-    do                      \
-    {                       \
-        rdloop(a, tmp, n);  \
-        if (i >= m) {       \
-            a = tmp;        \
-            break;          \
-        }                   \
-        rdloop(tmp, a, n);  \
-    } while (1);            \
+#define rdsort_ptr(a, n)                    \
+{                                           \
+    rdinit(a, n)                            \
+    type(a) tmp = alc(n * sizeof(a[0]));    \
+    do                                      \
+    {                                       \
+        rdloop(a, tmp, n)                   \
+        if (i >= m) {                       \
+            a = tmp;                        \
+            break;                          \
+        }                                   \
+        rdloop(tmp, a, n)                   \
+    } while (1);                            \
 }
 // fastest one but only for sizeof(a[0]) % 4 == 0
 #define rdsort_32(a, n)     \
 {                           \
-    rdinit(a, n);           \
+    rdinit(a, n)            \
+    type(a[0]) tmp[n];      \
     do                      \
     {                       \
-        rdloop(a, tmp, n);  \
-        rdloop(tmp, a, n);  \
+        rdloop(a, tmp, n)   \
+        rdloop(tmp, a, n)   \
     } while (i < m);        \
 }
 #define rdsort(type, a, n)                      \
