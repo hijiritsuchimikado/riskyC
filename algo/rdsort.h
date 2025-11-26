@@ -1,5 +1,5 @@
-#ifndef _RD_SORT
-#   define _RD_SORT
+#ifndef _RDSORT_H
+#   define _RDSORT_H
 
 #include "../core/base.h"
 
@@ -58,7 +58,7 @@
         rdloop(tmp, a, n)   \
     } while (i < m);        \
 }
-// only works with an array of only positive or negative values 
+// type == arr or ptr, only works with an array of only positive or negative values 
 #define rdsort(type, a, n)                      \
 {                                               \
     if (!(sizeof(a[0]) & 3)) rdsort_32(a, n)    \
