@@ -77,8 +77,8 @@
         rdloop(tmp, a, n)                   \
     } while (i < m);                        \
     rdcheck(a, n)                           \
-    mcp(tmp, &a[i], k * sizeof(a[0]));      \
     mcp(&tmp[k], a, i * sizeof(a[0]));      \
+    mcp(tmp, &a[i], k * sizeof(a[0]));      \
     a = tmp;
 // only for sizeof(a[0]) % 4 == 1 or 2
 #define rdsort_mixed_n32(a, n)                  \
