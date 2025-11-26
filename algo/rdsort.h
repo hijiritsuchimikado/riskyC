@@ -4,7 +4,7 @@
 #include "../core/base.h"
 
 #define rdinit(a, n)            \
-    typedef type(n) T;          \
+    typedef type(+n) T;         \
     T cnt[NUM_16];              \
     int m = sizeof(a[0]) << 3,  \
     i = 0;
