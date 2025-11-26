@@ -56,6 +56,7 @@
 /*  if an array has both positive and negative elements,
     the positive ones will be sorted at the beginning of the array
     while the negative ones will be sorted at the end of the array. */
+// with mixed type, there must exist at least one negative element, or the program crashes
 #define rdcheck(a, n)       \
     i = 0;                  \
     while (a[i] >= 0) ++i;  \
