@@ -15,17 +15,16 @@
     will be sorted at the beginning of the array and the negative elements will be sorted
     at the end. To solve this, the array is divided into two groups: unmixed and mixed.
 
-    The unmixed group uses a two-step loop where the elements are swapped between the
-    array and a temporary one. If the modulo of the size of each element by 4 is 0 or 3
-    (subgroup 32), the loop will continue until the final transition from the temporary
-    variable to the array. If not (subgroup ptr), use a pointer for a to avoid the need
-    to write the entire temporary array back to a, but a must be a pointer. This division
-    also ensures that each for-loop only has one branch.
+    The unmixed group uses a two-step loop where the elements are swapped between the array
+    and a temporary one. If the modulo of the size of each element by 4 is 0 or 3 (subgroup 32),
+    the loop will continue until the final transition from the temporary variable to the array.
+    If not (subgroup ptr), use a pointer for a to avoid the need to write the entire temporary
+    array back to a, but a must be a pointer. This division also ensures that each for-loop only has one branch.
 
-    In the mixed group, it is important to note that there must be at least one negative
-    element present, otherwise the program will crash. While there may be ways to manipulate
-    a to avoid this issue, it is not the focus of this work. The problem (1) is addressed by
-    using two memset operations for n32, one more assignment operator for ptr(32), and three memset operations for arr(32).
+    In the mixed group, it is important to note that there must be at least one negative element
+    present, otherwise the program will crash. While there may be ways to manipulate a to avoid
+    this issue, it is not the focus of this work. The problem (1) is addressed by using two memset
+    operations for n32, one more assignment operator for ptr(32), and three memset operations for arr(32).
 
     TL;DR: Just use this macro — it handles the tricky cases for you!
 */
