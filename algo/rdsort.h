@@ -37,8 +37,7 @@
 #define rdsf sizeof(cnt)
 #define rdsh rdsf >> 1
 #define rdks(a, sh) cnt[(ui_(16)) a[i]]
-#define rdkm(a, sh) cnt[(ui_(16)) (a[i] >> sh)]
-#define rdke(a, sh) cnt[a[i] >> sh]
+#define rdkn(a, sh) cnt[(ui_(16)) (a[i] >> sh)]
 #define rdl(a, tmp, n, cs, cz, rdk, is, ie, sh)     \
     ms(&cnt[cs], 0, cz);                            \
     for (T i = 0; i < n; ++i) ++rdk(tmp, sh);       \
@@ -54,9 +53,9 @@
 #define rdi8(a, n)          \
     rdi(a, n, 64)           \
     rdl(a, tmp, n, 0, rdsf  \
-    , rdkm, 0, 65535, 16)   \
+    , rdkn, 0, 65535, 16)   \
     rdl(tmp, a, n, 0, rdsf  \
-    , rdkm, 0, 65535, 32)   \
+    , rdkn, 0, 65535, 32)   \
 
 #define rds8u(a, n) rdsbk(a, n, 0, 256, 256, 8)
 #define rds8pst(a, n) rdsbk(a, n, 0, 128, 128, 8)
@@ -71,36 +70,36 @@
 #define rds32u(a, n)        \
     rdi(a, n, 32)           \
     rdl(a, tmp, n, 0, rdsf  \
-    , rdke, 0, 65535, 16)
+    , rdkn, 0, 65535, 16)
 #define rds32pst(a, n)      \
     rdi(a, n, 32)           \
     rdl(a, tmp, n, 0, rdsh  \
-    , rdke, 0, 32767, 16)
+    , rdkn, 0, 32767, 16)
 #define rds32ngt(a, n)          \
     rdi(a, n, 32)               \
     rdl(a, tmp, n, 32768, rdsh  \
-    , rdke, 32768, 65535, 16)
+    , rdkn, 32768, 65535, 16)
 #define rds32udf(a, n)      \
     rdi(a, n, 32)           \
     rdl(a, tmp, n, 0, rdsf, \
-    rdke, 32768, 32767, 16)
+    rdkn, 32768, 32767, 16)
 
 #define rds64u(a, n)        \
     rdi8(a, n)              \
     rdl(a, tmp, n, 0, rdsf  \
-    , rdke, 0, 65535, 48)
+    , rdkn, 0, 65535, 48)
 #define rds64pst(a, n)      \
     rdi8(a, n)              \
     rdl(a, tmp, n, 0, rdsh  \
-    , rdke, 0, 32767, 48)
+    , rdkn, 0, 32767, 48)
 #define rds64ngt(a, n)          \
     rdi8(a, n)                  \
     rdl(a, tmp, n, 32768, rdsh  \
-    , rdke, 32768, 65535, 48)
+    , rdkn, 32768, 65535, 48)
 #define rds64udf(a, n)      \
     rdi8(a, n)              \
     rdl(a, tmp, n, 0, rdsf, \
-    rdke, 32768, 32767, 48)
+    rdkn, 32768, 32767, 48)
 
 #define rdsort(a, n, stat)  \
 {                           \
