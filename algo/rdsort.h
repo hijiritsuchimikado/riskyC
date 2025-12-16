@@ -1,6 +1,20 @@
 #ifndef _RDSORT_H
 #   define _RDSORT_H
 
+/*
+    rdsort(a, n, stat)
+
+    a: array
+    n: number of elements
+    stat: (8/16/32/64)##(u/pst/ngt/udf)
+    
+    Optimized rdsort for specific types (8/16/32/64 bits) with four different keywords:
+    + u: unsigned type.
+    + pst: signed type with only positive ones.
+    + ngt: signed type with only negative ones.
+    + udf: signed type with undefined (positive or negative) ones.
+*/
+
 #include "../core/base.h"
 
 #define rdsbk(a, n, ls, le, vol, ksz)   \
@@ -42,17 +56,17 @@
     rdl(tmp, a, n, 0, rdsf  \
     , rdkm, 0, 65535, 32)   \
 
-#define rdsu8(a, n) rdsbk(a, n, 0, 256, 256, 8)
+#define rds8u(a, n) rdsbk(a, n, 0, 256, 256, 8)
 #define rds8pst(a, n) rdsbk(a, n, 0, 128, 128, 8)
 #define rds8ngt(a, n) rdsbk(a, n, 128, 256, 256, 8)
 #define rds8udf(a, n) rdsbk(a, n, 128, 128, 256, 8)
 
-#define rdsu16(a, n) rdsbk(a, n, 0, 65536, 65536, 16)
+#define rds16u(a, n) rdsbk(a, n, 0, 65536, 65536, 16)
 #define rds16pst(a, n) rdsbk(a, n, 0, 32768, 32768, 16)
 #define rds16ngt(a, n) rdsbk(a, n, 32768, 65536, 65536, 16)
 #define rds16udf(a, n) rdsbk(a, n, 32768, 32768, 65536, 16)
 
-#define rdsu32(a, n)        \
+#define rds32u(a, n)        \
     rdi(a, n, 32)           \
     rdl(a, tmp, n, 0, rdsf  \
     , rdke, 0, 65535, 16)
@@ -69,7 +83,7 @@
     rdl(a, tmp, n, 0, rdsf, \
     rdke, 32768, 32767, 16)
 
-#define rdsu64(a, n)        \
+#define rds64u(a, n)        \
     rdi8(a, n)              \
     rdl(a, tmp, n, 0, rdsf  \
     , rdke, 0, 65535, 48)
