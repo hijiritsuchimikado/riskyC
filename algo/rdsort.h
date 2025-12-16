@@ -13,6 +13,8 @@
     + pst: signed type with only positive ones.
     + ngt: signed type with only negative ones.
     + udf: signed type with undefined (positive or negative) ones.
+
+    TL;DR: Just use this macro — it handles the tricky cases for you!
 */
 
 #include "../core/base.h"
