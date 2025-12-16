@@ -19,9 +19,6 @@
 #define i_(x) int##x##_t
 #define ui_(x) uint##x##_t
 
-// for constants
-#define NUM_16 (1 << 16)
-
 // WARNING: Please don't mess up these with assignment operators!
 #define max(a, b) ((a) > (b) ? (a) : (b))
 #define min(a, b) ((a) < (b) ? (a) : (b))
