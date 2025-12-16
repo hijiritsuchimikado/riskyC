@@ -29,15 +29,17 @@ static const inline ui_(64) fibonacci(int x)
     };
     return table[x];
 }
-#define fibonacci_1(x)              \
+#define fibonacci_g(res_type, x)    \
 ({                                  \
-    uintptr_t a = 0, b = 1, tmp;    \
-    unsigned int y = x;             \
-    int n = 1 << log2_floor(y);     \
-    for (; n; n >>= 1) {            \
+    res_type a = 0, b = 1, tmp;     \
+    type(x) y = x,                  \
+    n = 1 << log2_floor(y);         \
+    for (; n; n >>= 1)              \
+    {                               \
         tmp = ((b << 1) - a) * a;   \
         b = b * b + a * a;          \
-        if (y & n) {                \
+        if (y & n)                  \
+        {                           \
             b += tmp;               \
             tmp = b - tmp;          \
         } a = tmp;                  \
