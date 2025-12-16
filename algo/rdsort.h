@@ -3,131 +3,92 @@
 
 #include "../core/base.h"
 
-/*
-    rdsort(type, mix_or, a, n)
+#define rdsbk(a, n, ls, le, vol, ksz)   \
+    typedef type(n) T;                  \
+    T cnt[vol], pos = 0;                \
+    ms(cnt, 0, sizeof(cnt));            \
+    for (T i = 0; i < n; ++i)           \
+        ++cnt[(ui_(ksz)) a[i]];         \
+{                                       \
+    ui_(ksz) i = ls;                    \
+    do                                  \
+    {                                   \
+        for (T j = 0; j < cnt[i]; ++j)  \
+            a[pos++] = i;               \
+        ++i;                            \
+    } while (i != (ui_(ksz)) le);       \
+}
+#define rdsf sizeof(cnt)
+#define rdsh rdsf >> 1
+#define rdks(a, sh) cnt[(ui_(16)) a[i]]
+#define rdkm(a, sh) cnt[(ui_(16)) (a[i] >> sh)]
+#define rdke(a, sh) cnt[a[i] >> sh]
+#define rdl(a, tmp, n, cs, cz, rdk, is, ie, sh)     \
+    ms(&cnt[cs], 0, cz);                            \
+    for (T i = 0; i < n; ++i) ++rdk(tmp, sh);       \
+    for (ui_(16) i = is; i != ie; ++i)              \
+        cnt[(ui_(16)) (i + (ui_(16)) 1)] += cnt[i]; \
+    for (T i = n; i--;) a[--rdk(tmp, sh)] = tmp[i];
+#define rdi(a, n, sz)       \
+    typedef type(n) T;      \
+    T cnt[65536];           \
+    ui_(sz) tmp[n];         \
+    rdl(tmp, a, n, 0, rdsf  \
+    , rdks, 0, 65535, 0)
+#define rdi8(a, n)          \
+    rdi(a, n, 64)           \
+    rdl(a, tmp, n, 0, rdsf  \
+    , rdkm, 0, 65535, 16)   \
+    rdl(tmp, a, n, 0, rdsf  \
+    , rdkm, 0, 65535, 32)   \
 
-    type: arr or ptr
-    mix_or: unmixed or mixed
-    a: array
-    n: number of elements (must be signed)
+#define rdsu8(a, n) rdsbk(a, n, 0, 256, 256, 8)
+#define rds8pst(a, n) rdsbk(a, n, 0, 128, 128, 8)
+#define rds8ngt(a, n) rdsbk(a, n, 128, 256, 256, 8)
+#define rds8udf(a, n) rdsbk(a, n, 128, 128, 256, 8)
 
-    (1) When an array contains both positive and negative elements, the positive elements
-    will be sorted at the beginning of the array and the negative elements will be sorted
-    at the end. To solve this, the array is divided into two groups: unmixed and mixed.
+#define rdsu16(a, n) rdsbk(a, n, 0, 65536, 65536, 16)
+#define rds16pst(a, n) rdsbk(a, n, 0, 32768, 32768, 16)
+#define rds16ngt(a, n) rdsbk(a, n, 32768, 65536, 65536, 16)
+#define rds16udf(a, n) rdsbk(a, n, 32768, 32768, 65536, 16)
 
-    The unmixed group uses a two-step loop where the elements are swapped between the array
-    and a temporary one. If the modulo of the size of each element by 4 is 0 or 3 (subgroup 32),
-    the loop will continue until the final transition from the temporary variable to the array.
-    If not (subgroup ptr), use a pointer for a to avoid the need to write the entire temporary
-    array back to a, but a must be a pointer. This division also ensures that each for-loop only has one branch.
+#define rdsu32(a, n)        \
+    rdi(a, n, 32)           \
+    rdl(a, tmp, n, 0, rdsf  \
+    , rdke, 0, 65535, 16)
+#define rds32pst(a, n)      \
+    rdi(a, n, 32)           \
+    rdl(a, tmp, n, 0, rdsh  \
+    , rdke, 0, 32767, 16)
+#define rds32ngt(a, n)          \
+    rdi(a, n, 32)               \
+    rdl(a, tmp, n, 32768, rdsh  \
+    , rdke, 32768, 65535, 16)
+#define rds32udf(a, n)      \
+    rdi(a, n, 32)           \
+    rdl(a, tmp, n, 0, rdsf, \
+    rdke, 32768, 32767, 16)
 
-    In the mixed group, it is important to note that there must be at least one negative element
-    present, otherwise the program will crash. While there may be ways to manipulate a to avoid
-    this issue, it is not the focus of this work. The problem (1) is addressed by using two memset
-    operations for n32, one more assignment operator for ptr(32), and three memset operations for arr(32).
+#define rdsu64(a, n)        \
+    rdi8(a, n)              \
+    rdl(a, tmp, n, 0, rdsf  \
+    , rdke, 0, 65535, 48)
+#define rds64pst(a, n)      \
+    rdi8(a, n)              \
+    rdl(a, tmp, n, 0, rdsh  \
+    , rdke, 0, 32767, 48)
+#define rds64ngt(a, n)          \
+    rdi8(a, n)                  \
+    rdl(a, tmp, n, 32768, rdsh  \
+    , rdke, 32768, 65535, 48)
+#define rds64udf(a, n)      \
+    rdi8(a, n)              \
+    rdl(a, tmp, n, 0, rdsf, \
+    rdke, 32768, 32767, 48)
 
-    TL;DR: Just use this macro — it handles the tricky cases for you!
-*/
-
-#define rdinit(a, n)            \
-    typedef type(n) T;          \
-    T cnt[NUM_16];              \
-    int m = sizeof(a[0]) << 3,  \
-    i = 0;
-#define rdloop(a, tmp, n)                           \
-    ms(cnt, 0, sizeof(cnt));                        \
-    for (T j = 0; j < n; ++j)                       \
-        ++cnt[(a[j] >> i) & 0xFFFF];                \
-    for (int j = 1; j < NUM_16; ++j)                \
-        cnt[j] += cnt[j - 1];                       \
-    for (T j = n - 1; j >= 0; --j)                  \
-        tmp[--cnt[(a[j] >> i) & 0xFFFF]] = a[j];    \
-    i += 16;
-#define rdcheck(a, n)       \
-    i = 0;                  \
-    while (a[i] >= 0) ++i;  \
-    int k = n - i;
-#define rdsort_unmixed_arr(a, n)            \
-    rdinit(a, n)                            \
-    type(a[0]) tmp[n];                      \
-    do                                      \
-    {                                       \
-        rdloop(a, tmp, n)                   \
-        if (i >= m)                         \
-        {                                   \
-            mcp(a, tmp, n * sizeof(a[0]));  \
-            break;                          \
-        } rdloop(tmp, a, n)                 \
-    } while (1);
-#define rdsort_unmixed_ptr(a, n)            \
-    rdinit(a, n)                            \
-    type(a) tmp = alc(n * sizeof(a[0]));    \
-    do                                      \
-    {                                       \
-        rdloop(a, tmp, n)                   \
-        if (i >= m)                         \
-        {                                   \
-            a = tmp;                        \
-            break;                          \
-        } rdloop(tmp, a, n)                 \
-    } while (1);
-#define rdsort_unmixed_32(a, n) \
-    rdinit(a, n)                \
-    type(a[0]) tmp[n];          \
-    do                          \
-    {                           \
-        rdloop(a, tmp, n)       \
-        rdloop(tmp, a, n)       \
-    } while (i < m);
-#define rdsort_mixed_arr(a, n)              \
-    rdsort_unmixed_32(a, n)                 \
-    rdcheck(a, n)                           \
-    if (i < (n >> 1))                       \
-    {                                       \
-        mcp(tmp, a, i * sizeof(a[0]));      \
-        mcp(a, &a[i], k * sizeof(a[0]));    \
-        mcp(&a[k], tmp, i * sizeof(a[0]));  \
-    }                                       \
-    else                                    \
-    {                                       \
-        mcp(tmp, &a[i], k * sizeof(a[0]));  \
-        mmv(&a[k], a, i * sizeof(a[0]));    \
-        mcp(a, tmp, k * sizeof(a[0]));      \
-    }
-#define rdsort_mixed_ptr(a, n)              \
-    rdinit(a, n)                            \
-    type(a) tmp = alc(n * sizeof(a[0]));    \
-    do                                      \
-    {                                       \
-        rdloop(a, tmp, n)                   \
-        rdloop(tmp, a, n)                   \
-    } while (i < m);                        \
-    rdcheck(a, n)                           \
-    mcp(&tmp[k], a, i * sizeof(a[0]));      \
-    mcp(tmp, &a[i], k * sizeof(a[0]));      \
-    a = tmp;
-#define rdsort_mixed_n32(a, n)                  \
-    rdinit(a, n)                                \
-    type(a[0]) tmp[n];                          \
-    do                                          \
-    {                                           \
-        rdloop(a, tmp, n)                       \
-        if (i >= m)                             \
-        {                                       \
-            rdcheck(tmp, n)                     \
-            mcp(a, &tmp[i], k * sizeof(a[0]));  \
-            mcp(&a[k], tmp, i * sizeof(a[0]));  \
-            break;                              \
-        }                                       \
-        rdloop(tmp, a, n)                       \
-    } while (1);
-#define rdsort_unmixed(type, a, n)                                      \
-    cepr((sizeof(a[0]) & 1) == ((sizeof(a[0]) >> 1) & 1),               \
-    ({rdsort_unmixed_32(a, n) 0;}), ({rdsort_unmixed_##type(a, n) 0;}))
-#define rdsort_mixed(type, a, n)                                        \
-    cepr((sizeof(a[0]) & 1) == ((sizeof(a[0]) >> 1) & 1),               \
-    ({rdsort_mixed_##type(a, n) 0;}), ({rdsort_mixed_n32(a, n) 0;}))
-
-#define rdsort(type, mix_or, a, n) rdsort_##mix_or(type, a, n)
+#define rdsort(a, n, stat)  \
+{                           \
+    rds##stat(a, n)         \
+}
 
 #endif
