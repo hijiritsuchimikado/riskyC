@@ -7,7 +7,7 @@
     a: array
     n: number of elements
     stat: (8/16/32/64)##(u/pst/ngt/udf)
-    
+
     Optimized rdsort for specific types (8/16/32/64 bits) with four different keywords:
     + u: unsigned type.
     + pst: signed type with only positive ones.
@@ -36,26 +36,32 @@
 }
 #define rdsf sizeof(cnt)
 #define rdsh rdsf >> 1
-#define rdks(a, sh) cnt[(ui_(16)) a[i]]
-#define rdkn(a, sh) cnt[(ui_(16)) (a[i] >> sh)]
-#define rdl(a, tmp, n, cs, cz, rdk, is, ie, sh)     \
-    ms(&cnt[cs], 0, cz);                            \
-    for (T i = 0; i < n; ++i) ++rdk(tmp, sh);       \
-    for (ui_(16) i = is; i != ie; ++i)              \
-        cnt[(ui_(16)) (i + (ui_(16)) 1)] += cnt[i]; \
-    for (T i = n; i--;) a[--rdk(tmp, sh)] = tmp[i];
-#define rdi(a, n, sz)       \
-    typedef type(n) T;      \
-    T cnt[65536];           \
-    ui_(sz) tmp[n];         \
-    rdl(tmp, a, n, 0, rdsf  \
-    , rdks, 0, 65535, 0)
-#define rdi8(a, n)          \
-    rdi(a, n, 64)           \
-    rdl(a, tmp, n, 0, rdsf  \
-    , rdkn, 0, 65535, 16)   \
-    rdl(tmp, a, n, 0, rdsf  \
-    , rdkn, 0, 65535, 32)   \
+#define rdkl(a, sh) cnt[(ui_(16)) a[i]]
+#define rdks(a, sh) cnt[(ui_(16)) (a[i] >> sh)]
+#define rdl(a, tmp, n, cs, st, kt, is, ie, sh)          \
+    ms(&cnt[cs], 0, rds##st);                           \
+    for (T i = 0; i < n; ++i) ++rdk##kt(tmp, sh);       \
+    for (ui_(16) i = is; i != ie; ++i)                  \
+        cnt[(ui_(16)) (i + (ui_(16)) 1)] += cnt[i];     \
+    for (T i = n; i--;) a[--rdk##kt(tmp, sh)] = tmp[i];
+#define rdi(a, n, sz)   \
+    typedef type(n) T;  \
+    T cnt[65536];       \
+    ui_(sz) tmp[n];     \
+    rdl(tmp, a, n, 0,   \
+    f, l, 0, 65535, 0)
+#define rds32(a, n, cs, st, is, ie) \
+    rdi(a, n, 32)                   \
+    rdl(a, tmp, n, cs,              \
+    st, s, is, ie, 16)
+#define rds64(a, n, cs, st, is, ie) \
+    rdi(a, n, 64)                   \
+    rdl(a, tmp, n, 0,               \
+    f, s, 0, 65535, 16)             \
+    rdl(tmp, a, n, 0,               \
+    f, s, 0, 65535, 32)             \
+    rdl(a, tmp, n, cs,              \
+    st, s, is, ie, 48)
 
 #define rds8u(a, n) rdsbk(a, n, 0, 256, 256, 8)
 #define rds8pst(a, n) rdsbk(a, n, 0, 128, 128, 8)
@@ -67,39 +73,15 @@
 #define rds16ngt(a, n) rdsbk(a, n, 32768, 65536, 65536, 16)
 #define rds16udf(a, n) rdsbk(a, n, 32768, 32768, 65536, 16)
 
-#define rds32u(a, n)        \
-    rdi(a, n, 32)           \
-    rdl(a, tmp, n, 0, rdsf  \
-    , rdkn, 0, 65535, 16)
-#define rds32pst(a, n)      \
-    rdi(a, n, 32)           \
-    rdl(a, tmp, n, 0, rdsh  \
-    , rdkn, 0, 32767, 16)
-#define rds32ngt(a, n)          \
-    rdi(a, n, 32)               \
-    rdl(a, tmp, n, 32768, rdsh  \
-    , rdkn, 32768, 65535, 16)
-#define rds32udf(a, n)      \
-    rdi(a, n, 32)           \
-    rdl(a, tmp, n, 0, rdsf, \
-    rdkn, 32768, 32767, 16)
+#define rds32u(a, n) rds32(a, n, 0, f, 0, 65535)
+#define rds32pst(a, n) rds32(a, n, 0, h, 0, 32767)
+#define rds32ngt(a, n) rds32(a, n, 32768, h, 32768, 65535)
+#define rds32udf(a, n) rds32(a, n, 0, f, 32768, 32767)
 
-#define rds64u(a, n)        \
-    rdi8(a, n)              \
-    rdl(a, tmp, n, 0, rdsf  \
-    , rdkn, 0, 65535, 48)
-#define rds64pst(a, n)      \
-    rdi8(a, n)              \
-    rdl(a, tmp, n, 0, rdsh  \
-    , rdkn, 0, 32767, 48)
-#define rds64ngt(a, n)          \
-    rdi8(a, n)                  \
-    rdl(a, tmp, n, 32768, rdsh  \
-    , rdkn, 32768, 65535, 48)
-#define rds64udf(a, n)      \
-    rdi8(a, n)              \
-    rdl(a, tmp, n, 0, rdsf, \
-    rdkn, 32768, 32767, 48)
+#define rds64u(a, n) rds64(a, n, 0, f, 0, 65535)
+#define rds64pst(a, n) rds64(a, n, 0, h, 0, 32767)
+#define rds64ngt(a, n) rds64(a, n, 32768, h, 32768, 65535)
+#define rds64udf(a, n) rds64(a, n, 0, f, 32768, 32767)
 
 #define rdsort(a, n, stat)  \
 {                           \
