@@ -3,7 +3,7 @@
 
 #include "../core/base.h"
 
-#define log2_floor(x) (~(-(sizeof(type(x)) << 3)) ^ clzg(x))
+#define log2_floor(x) (~(-(sizeof(x) << 3)) ^ clzg(x))
 #define log2_ceil(x) (log2_floor(x) + 1)
 // table[i] = ceil(log10(2^i)) << 32 - 10^ceil(log10(2^i))
 static const inline int log10_floor32(unsigned int x)
